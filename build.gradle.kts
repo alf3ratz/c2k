@@ -19,6 +19,13 @@ tasks.generateGrammarSource {
     arguments = arguments + listOf("-visitor", "-long-messages")
     outputs.dir(file("build/generated-src/antlr/main"))
 }
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 tasks {
     compileJava {
@@ -35,6 +42,9 @@ tasks {
         from(sourceSets.main.get().output)
         configurations["runtimeClasspath"].forEach {
             from(zipTree(it.absoluteFile))
+        }
+        manifest {
+            attributes["Main-Class"] = "org.alf3ratz.MainKt"
         }
     }
     test {
