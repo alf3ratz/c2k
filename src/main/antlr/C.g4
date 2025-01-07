@@ -5,7 +5,10 @@ program: statement+;
 statement: declaration
          | assignment
          | expression
+         | block
          ;
+
+block: '{' statement* '}';
 
 declaration: type IDENTIFIER '=' expression ';';  // Объявление с присваиванием
 

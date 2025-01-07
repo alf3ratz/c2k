@@ -1,6 +1,7 @@
 package org.alf3ratz
 
 import CBaseVisitor
+import CParser
 
 class KotlinTranslator : CBaseVisitor<String>() {
 
@@ -8,11 +9,11 @@ class KotlinTranslator : CBaseVisitor<String>() {
     override fun visitDeclaration(ctx: CParser.DeclarationContext): String {
         val type = ctx.type().text  // 'int', 'float', и т.д.
         val identifier = ctx.IDENTIFIER().text  // имя переменной
-
+        val resultException = visit(ctx.expression())
         // Преобразуем тип C в Kotlin
         val kotlinType = convertToKotlinType(type)
 
-        return "$kotlinType $identifier = 0"  // Пример: "Int x = 0"
+        return "$kotlinType $identifier = $resultException"  // Пример: "Int x = 0"
     }
 
     // Преобразуем присваивание из C в Kotlin
@@ -29,6 +30,20 @@ class KotlinTranslator : CBaseVisitor<String>() {
             ctx.IDENTIFIER() != null -> ctx.IDENTIFIER().text  // Пример: "x"
             else -> ctx.NUMBER().text  // Пример: "5"
         }
+    }
+
+    // Обработка блока с фигурными скобками (например, тела функций или условных блоков)
+    override fun visitBlock(ctx: CParser.BlockContext): String {
+        // Каждый statement внутри блока обрабатывается отдельно
+        val statements = ctx.statement().joinToString("\n") { visit(it) }
+        // Возвращаем блок как строку с фигурными скобками и вложенными выражениями
+        return "{\n$statements\n}"
+    }
+
+    // Преобразуем программу с учетом блока
+    override fun visitProgram(ctx: CParser.ProgramContext): String {
+        // Обрабатываем все операторы программы (включая блоки)
+        return ctx.statement().joinToString("\n") { visit(it) }
     }
 
     // Преобразуем типы данных из C в Kotlin

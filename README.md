@@ -29,6 +29,8 @@ java -jar c2k.jar -code "int x = 5;","int y = 2;"
 
 ### TODO list
 - [x] simple assignments
-- [ ] curly braces handling
+- [x] simple curly braces handling
+- [ ] logic operators
+- [ ] for/while
 - [ ] simple classes/structures
 - [ ] functions
