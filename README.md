@@ -1,12 +1,28 @@
 # C2K Converter
-Converter of C/C++ projects to Kotlin.
+Converter of C/C++ code to Kotlin.
 
 # How to install
 Clone this repo with git and run
-Coming soon...
+```bash
+./gradlew run [flags]
+```
 
 ### .jar release:
-https://github.com/alf3ratz/c2k/releases
+https://github.com/alf3ratz/converter/releases
 
 # Usage
-Coming soon...
+Run installed app
+```bash
+java -jar [Downloaded release name].jar [flags]
+```
+
+CLI flags:
+- `-file` - path to c/c++ file
+- `-code` - line of c/c++ code
+- `-lines` - multiple lines of c/c++ code separated by commas
+
+Example:
+```bash
+java -jar c2k.jar -code "int x = 5;"  
+java -jar c2k.jar -code "int x = 5;","int y = 2;"
+```
