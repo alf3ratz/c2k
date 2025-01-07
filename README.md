@@ -26,3 +26,9 @@ Example:
 java -jar c2k.jar -code "int x = 5;"  
 java -jar c2k.jar -code "int x = 5;","int y = 2;"
 ```
+
+### TODO list
+- [x] simple assignments
+- [ ] curly braces handling
+- [ ] simple classes/structures
+- [ ] functions
