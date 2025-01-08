@@ -1,9 +1,5 @@
 package org.alf3ratz
 
-import CLexer
-import CParser
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
 import java.io.File
 
 const val FILE_PATH_ERROR_MSG = "Ошибка: необходимо указать путь к файлу после флага -file"
@@ -67,14 +63,11 @@ fun main(args: Array<String>) {
         return
     }
 
-    // Создание лексера и парсера для C
-    val tree =  Utils().getAstTree(inputCode)
+    val tree = Utils().getAstTree(inputCode)
 
-    // Создание экземпляра транслятора для Kotlin
     val visitor = KotlinTranslator()
     val kotlinCode = visitor.visit(tree)
 
-    // Вывод сгенерированного кода на Kotlin
     println("\nСгенерированный код на Kotlin:")
     println(kotlinCode)
 }
