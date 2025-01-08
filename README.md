@@ -30,7 +30,7 @@ java -jar c2k.jar -code "int x = 5;","int y = 2;"
 ### TODO list
 - [x] simple assignments
 - [x] simple curly braces handling
-- [ ] logic operators
+- [x] simple logic operators
 - [ ] for/while
 - [ ] simple classes/structures
 - [ ] functions

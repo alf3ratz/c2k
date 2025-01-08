@@ -68,17 +68,7 @@ fun main(args: Array<String>) {
     }
 
     // Создание лексера и парсера для C
-    val input = CharStreams.fromString(inputCode)
-    val lexer = CLexer(input)  // CLexer — это лексер для C, сгенерированный ANTLR
-    val tokens = CommonTokenStream(lexer)
-    val parser = CParser(tokens)  // CParser — это парсер для C, сгенерированный ANTLR
-
-    // Получаем синтаксическое дерево
-    val tree = parser.program()
-
-    // Печать синтаксического дерева для отладки
-    println("Синтаксическое дерево:")
-    println(tree.toStringTree(parser))
+    val tree =  Utils().getAstTree(inputCode)
 
     // Создание экземпляра транслятора для Kotlin
     val visitor = KotlinTranslator()
