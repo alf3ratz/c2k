@@ -16,12 +16,19 @@ assignment: IDENTIFIER '=' expression ';';  // Присваивание
 
 expression: IDENTIFIER
           | NUMBER
+          | BOOLEAN
           | '(' expression ')'
-          | expression operator expression;  // Операции с выражениями
+          | expression operator expression
+          | '!' expression  // Унарный оператор NOT
+          ;
 
-operator: '+' | '-' | '*' | '/';  // Операторы для выражений
+operator: '+' | '-' | '*' | '/'              // Операторы для выражений
+        | '&&' | '||' | '==' | '!='          // Логические операторы
+        | '<' | '<=' | '>' | '>=';           // Операторы сравнения
 
-type: 'int' | 'float' | 'double';  // Типы данных
+type: 'int' | 'float' | 'double' | 'boolean';  // Типы данных
+
+BOOLEAN: 'true' | 'false';  // Логические значения
 
 IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]*;  // Имя переменной
 
