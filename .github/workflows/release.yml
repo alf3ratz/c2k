@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Generate JAR
-        run: ./gradlew c2k
+        run: ./gradlew fatJar
 
       - name: Extract release version
         id: extract_version
