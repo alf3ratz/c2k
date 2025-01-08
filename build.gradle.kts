@@ -83,6 +83,10 @@ tasks.register<JacocoReport>("jacocoMergeReport") {
     }
 }
 
+tasks.named("compileTestKotlin") {
+    dependsOn("generateTestGrammarSource")
+}
+
 tasks {
     compileJava {
         dependsOn(generateGrammarSource)
