@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release v${{ env.VERSION }}
+          release_name: Release ${{ github.ref }} #Release v${{ env.VERSION }}
           draft: false
           prerelease: false
 
@@ -53,4 +53,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/libs/c2k-${{ env.VERSION }}.jar
           asset_name: c2k-${{ env.VERSION }}.jar
-          asset_content_type: application/java-archive
+          asset_content_type: application/jar
