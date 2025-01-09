@@ -32,10 +32,12 @@ class KotlinTranslator : CBaseVisitor<String>() {
                 val right = visit(ctx.expression(1))
                 "($left $op $right)"  // Пример: "(x && y)"
             }
+
             ctx.expression().size == 1 -> {
                 val inner = visit(ctx.expression(0))
                 "!$inner"
             }
+
             else -> visit(ctx.expression(0))
         }
     }
@@ -49,8 +51,10 @@ class KotlinTranslator : CBaseVisitor<String>() {
         return ctx.statement().joinToString("\n") { visit(it) }
     }
 
-    override fun visitForLoop(ctx: CParser.ForLoopContext?): String {
-        return super.visitForLoop(ctx)
+    override fun visitWhileLoop(ctx: CParser.WhileLoopContext): String {
+        val expression = visit(ctx.expression())
+        val statements = ctx.statement().joinToString("\n") { visit(it) }
+        return "while($expression){$statements}"
     }
 
     private fun convertToKotlinType(type: String): String {

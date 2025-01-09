@@ -38,6 +38,6 @@ NUMBER: [0-9]+;
 
 WS: [ \t\r\n]+ -> skip;
 
-whileLoop: 'while' '(' expression ')' statement;
+whileLoop: 'while' '(' expression ')' '{' statement* '}';
 
 forLoop: 'for' '(' (declaration | assignment | expression)? ';' expression? ';' expression? ')' statement;

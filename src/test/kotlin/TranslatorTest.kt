@@ -25,4 +25,16 @@ class TranslatorTest {
         val kotlinCode = visitor.visit(tree)
         assertEquals("Int x = (5 $operator 6)", kotlinCode)
     }
+
+    @Test
+    fun whileLoopTest() {
+        val declaration = " int z = 5; while(true){ int x = 5; }"
+        val tree = Utils().getAstTree(declaration)
+        val visitor = KotlinTranslator()
+        val kotlinCode = visitor.visit(tree)
+        assertEquals(
+            "Int z = 5\n" +
+                    "while(true){Int x = 5}", kotlinCode
+        )
+    }
 }
