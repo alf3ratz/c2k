@@ -11,16 +11,14 @@ const val NO_CODE_ERROR_MSG = "Ошибка: код не был предоста
 fun main(args: Array<String>) {
     var inputCode = ""
 
-    // Обрабатываем флаги
     var i = 0
     while (i < args.size) {
         when (args[i]) {
             "-file" -> {
-                // Чтение из файла
                 if (i + 1 < args.size && !args[i + 1].startsWith("-")) {
                     val filePath = args[i + 1]
                     inputCode = File(filePath).readText()
-                    i++  // Пропускаем аргумент пути к файлу
+                    i++
                 } else {
                     println(FILE_PATH_ERROR_MSG)
                     return
@@ -28,10 +26,9 @@ fun main(args: Array<String>) {
             }
 
             "-code" -> {
-                // Прямо строка кода
                 if (i + 1 < args.size && !args[i + 1].startsWith("-")) {
                     inputCode = args[i + 1]
-                    i++  // Пропускаем строку кода
+                    i++
                 } else {
                     println(CODE_LINE_ERROR_MSG)
                     return
@@ -39,11 +36,10 @@ fun main(args: Array<String>) {
             }
 
             "-lines" -> {
-                // Несколько строк кода (через запятую)
                 if (i + 1 < args.size && !args[i + 1].startsWith("-")) {
                     val lines = args[i + 1].split(",")
                     inputCode = lines.joinToString("\n")
-                    i++  // Пропускаем строку с кодом
+                    i++
                 } else {
                     println(CODE_LINES_ERROR_MSG)
                     return

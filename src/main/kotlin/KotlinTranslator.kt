@@ -30,7 +30,7 @@ class KotlinTranslator : CBaseVisitor<String>() {
                 val left = visit(ctx.expression(0))
                 val op = ctx.operator().text
                 val right = visit(ctx.expression(1))
-                "($left $op $right)"  // Пример: "(x && y)"
+                "($left $op $right)"
             }
 
             ctx.expression().size == 1 -> {
