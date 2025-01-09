@@ -6,32 +6,38 @@ statement: declaration
          | assignment
          | expression
          | block
+         | whileLoop
+         | forLoop
          ;
 
 block: '{' statement* '}';
 
-declaration: type IDENTIFIER '=' expression ';';  // Объявление с присваиванием
+declaration: type IDENTIFIER '=' expression ';';
 
-assignment: IDENTIFIER '=' expression ';';  // Присваивание
+assignment: IDENTIFIER '=' expression ';';
 
 expression: IDENTIFIER
           | NUMBER
           | BOOLEAN
           | '(' expression ')'
           | expression operator expression
-          | '!' expression  // Унарный оператор NOT
+          | '!' expression
           ;
 
-operator: '+' | '-' | '*' | '/'              // Операторы для выражений
-        | '&&' | '||' | '==' | '!='          // Логические операторы
-        | '<' | '<=' | '>' | '>=';           // Операторы сравнения
+operator: '+' | '-' | '*' | '/'
+        | '&&' | '||' | '==' | '!='
+        | '<' | '<=' | '>' | '>=';
 
-type: 'int' | 'float' | 'double' | 'boolean';  // Типы данных
+type: 'int' | 'float' | 'double' | 'boolean';
 
-BOOLEAN: 'true' | 'false';  // Логические значения
+BOOLEAN: 'true' | 'false';
 
-IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]*;  // Имя переменной
+IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]*;
 
-NUMBER: [0-9]+;  // Числовое значение
+NUMBER: [0-9]+;
 
-WS: [ \t\r\n]+ -> skip;  // Пропускаем пробельные символы
+WS: [ \t\r\n]+ -> skip;
+
+whileLoop: 'while' '(' expression ')' statement;
+
+forLoop: 'for' '(' (declaration | assignment | expression)? ';' expression? ';' expression? ')' statement;
