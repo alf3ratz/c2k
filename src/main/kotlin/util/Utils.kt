@@ -1,4 +1,4 @@
-package org.alf3ratz
+package org.alf3ratz.util
 
 import CLexer
 import CParser

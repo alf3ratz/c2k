@@ -1,5 +1,6 @@
 package org.alf3ratz
 
+import org.alf3ratz.util.Utils
 import java.io.File
 
 const val FILE_PATH_ERROR_MSG = "Ошибка: необходимо указать путь к файлу после флага -file"
