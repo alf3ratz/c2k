@@ -48,6 +48,17 @@ class TranslatorTest {
         )
     }
 
+    @Test
+    fun forLoopTest(){
+        val forLoop = "for(int i = 0; i< 5; i++){int x = 2;}"
+        val tree = Utils().getAstTree(forLoop)
+        val kotlinCode = visitor.visit(tree)
+        assertEquals(
+            "Int z = 5\n" +
+                    "while(true){Int x = 5}", kotlinCode
+        )
+    }
+
     @ParameterizedTest
     @MethodSource("typeArguments")
     fun blockTest(cType: String, kType: String) {

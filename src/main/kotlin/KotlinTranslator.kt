@@ -57,6 +57,10 @@ class KotlinTranslator : CBaseVisitor<String>() {
         return "while($expression){$statements}"
     }
 
+    override fun visitForLoop(ctx: CParser.ForLoopContext): String {
+        return super.visitForLoop(ctx)
+    }
+
     private fun convertToKotlinType(type: String): String {
         return when (type) {
             "int" -> "Int"

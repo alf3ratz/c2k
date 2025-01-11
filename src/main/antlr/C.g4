@@ -14,7 +14,7 @@ block: '{' statement* '}';
 
 declaration: type IDENTIFIER '=' expression ';';
 
-assignment: IDENTIFIER '=' expression ';';
+assignment: IDENTIFIER assignmentOperator expression ';';
 
 expression: IDENTIFIER
           | NUMBER
@@ -22,11 +22,19 @@ expression: IDENTIFIER
           | '(' expression ')'
           | expression operator expression
           | '!' expression
+          | IDENTIFIER incrementOperator
+          | incrementOperator IDENTIFIER
           ;
 
 operator: '+' | '-' | '*' | '/'
         | '&&' | '||' | '==' | '!='
         | '<' | '<=' | '>' | '>=';
+
+assignmentOperator: '='
+                  | '*='
+                  | '/=';
+
+incrementOperator: '++' | '--';
 
 type: 'int' | 'float' | 'double' | 'boolean';
 
@@ -40,4 +48,4 @@ WS: [ \t\r\n]+ -> skip;
 
 whileLoop: 'while' '(' expression ')' '{' statement* '}';
 
-forLoop: 'for' '(' (declaration | assignment | expression)? ';' expression? ';' expression? ')' statement;
+forLoop: 'for' '(' (declaration | assignment | expression)? ';' expression? ';' expression? ')' '{' statement* '}';
