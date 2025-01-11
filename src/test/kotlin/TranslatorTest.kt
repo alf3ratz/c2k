@@ -30,6 +30,14 @@ class TranslatorTest {
     }
 
     @Test
+    fun logicInnerOperatorTest(){
+        val declaration = "boolean x = !true;"
+        val tree = Utils().getAstTree(declaration)
+        val kotlinCode = visitor.visit(tree)
+        assertEquals("Boolean x = !true", kotlinCode)
+    }
+
+    @Test
     fun whileLoopTest() {
         val declaration = " int z = 5; while(true){ int x = 5; }"
         val tree = Utils().getAstTree(declaration)
