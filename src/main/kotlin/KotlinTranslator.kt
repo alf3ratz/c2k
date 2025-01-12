@@ -58,8 +58,51 @@ class KotlinTranslator : CBaseVisitor<String>() {
     }
 
     override fun visitForLoop(ctx: CParser.ForLoopContext): String {
-        return super.visitForLoop(ctx)
+        val initialization = ctx.declaration() ?: ctx.assignment() ?: ctx.expression(0)
+
+        val start = when (initialization) {
+            is CParser.DeclarationContext -> ctx.declaration().IDENTIFIER().text
+            is CParser.AssignmentContext -> ctx.assignment().IDENTIFIER().text
+            else -> ""
+        }
+
+        val startDeclaration = when (initialization) {
+            is CParser.DeclarationContext -> visit(initialization)
+            is CParser.AssignmentContext -> visit(initialization)
+            else -> ""
+        }
+
+        val condition = if (ctx.expression(0) != null) {
+            visit(ctx.expression(0))
+        } else {
+            "true"
+        }
+
+        val step = if (ctx.expression(1) != null) {
+            visit(ctx.expression(1))  // инкремент или декремент
+        } else {
+            ""
+        }
+
+        val range = when {
+            start.isNotEmpty() && condition.contains("<") -> {
+                val subString = condition.slice(condition.indexOf('<') + 1 until condition.length - 1)
+                val endOfLoopValue = subString.trim().toInt()-1
+                "${startDeclaration.substringAfter("=").trim()}..${endOfLoopValue}"
+            }
+
+            else -> ""
+        }
+
+        val statements = ctx.statement().joinToString("\n") { visit(it) }
+
+        return if (range.isNotEmpty()) {
+            "for ($start in $range) {\n$statements\n}"
+        } else {
+            "for ($start; $condition; $step) {\n$statements\n}"
+        }
     }
+
 
     private fun convertToKotlinType(type: String): String {
         return when (type) {

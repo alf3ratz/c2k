@@ -30,7 +30,7 @@ class TranslatorTest {
     }
 
     @Test
-    fun logicInnerOperatorTest(){
+    fun logicInnerOperatorTest() {
         val declaration = "boolean x = !true;"
         val tree = Utils().getAstTree(declaration)
         val kotlinCode = visitor.visit(tree)
@@ -49,13 +49,12 @@ class TranslatorTest {
     }
 
     @Test
-    fun forLoopTest(){
+    fun forLoopTest() {
         val forLoop = "for(int i = 0; i< 5; i++){int x = 2;}"
         val tree = Utils().getAstTree(forLoop)
         val kotlinCode = visitor.visit(tree)
         assertEquals(
-            "Int z = 5\n" +
-                    "while(true){Int x = 5}", kotlinCode
+            "for (i in 0..4) {\nInt x = 2\n}", kotlinCode
         )
     }
 
