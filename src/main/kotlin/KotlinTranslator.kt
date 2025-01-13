@@ -15,10 +15,11 @@ class KotlinTranslator : CBaseVisitor<String>() {
     }
 
     override fun visitAssignment(ctx: CParser.AssignmentContext): String {
-        val identifier = ctx.IDENTIFIER().text
-        val expression = visit(ctx.expression())
+//        val identifier = ctx.IDENTIFIER().text
+//        val expression = visit(ctx.expression())
 
-        return "$identifier = $expression"
+        // return "$identifier = $expression"
+        return ""
     }
 
     override fun visitExpression(ctx: CParser.ExpressionContext): String {
@@ -87,7 +88,7 @@ class KotlinTranslator : CBaseVisitor<String>() {
         val range = when {
             start.isNotEmpty() && condition.contains("<") -> {
                 val subString = condition.slice(condition.indexOf('<') + 1 until condition.length - 1)
-                val endOfLoopValue = subString.trim().toInt()-1
+                val endOfLoopValue = subString.trim().toInt() - 1
                 "${startDeclaration.substringAfter("=").trim()}..${endOfLoopValue}"
             }
 
@@ -101,6 +102,10 @@ class KotlinTranslator : CBaseVisitor<String>() {
         } else {
             "for ($start; $condition; $step) {\n$statements\n}"
         }
+    }
+
+    override fun visitArrayDeclaration(ctx: CParser.ArrayDeclarationContext): String {
+        return super.visitArrayDeclaration(ctx)
     }
 
 

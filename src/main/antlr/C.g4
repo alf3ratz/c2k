@@ -12,13 +12,16 @@ statement: declaration
 
 block: '{' statement* '}';
 
-declaration: type IDENTIFIER '=' expression ';';
+declaration: type IDENTIFIER arrayDeclaration? '=' expression ';';
 
-assignment: IDENTIFIER assignmentOperator expression ';';
+arrayDeclaration: '[' expression ']' ( '[' expression ']' )*;
+
+assignment: IDENTIFIER ('[' expression ']')? assignmentOperator expression ';';
 
 expression: IDENTIFIER
           | NUMBER
           | BOOLEAN
+          | IDENTIFIER ('[' expression ']')
           | '(' expression ')'
           | expression operator expression
           | '!' expression
