@@ -105,7 +105,19 @@ class KotlinTranslator : CBaseVisitor<String>() {
     }
 
     override fun visitArrayDeclaration(ctx: CParser.ArrayDeclarationContext): String {
-        return super.visitArrayDeclaration(ctx)
+        val dimensions = ctx.expression().joinToString(", ") { visit(it) }
+
+        return if (ctx.expression().size == 1) {
+            "Array(${dimensions})"
+        } else {
+            var arrayInit = "Array(${dimensions.split(", ")[0]}) { "
+            for (i in 1 until ctx.expression().size) {
+                arrayInit += "Array(${dimensions.split(", ")[i]}) { "
+            }
+            arrayInit += "0"
+            arrayInit += " }".repeat(ctx.expression().size)
+            arrayInit
+        }
     }
 
 
