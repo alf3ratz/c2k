@@ -12,9 +12,11 @@ statement: declaration
 
 block: '{' statement* '}';
 
-declaration: type IDENTIFIER arrayDeclaration? '=' expression ';';
+declaration: type IDENTIFIER arrayDeclaration? ('=' expression | '=' arrayInitialization)? ';';
 
-arrayDeclaration: '[' expression ']' ( '[' expression ']' )*;
+arrayDeclaration: '[' (expression | '*') ']' ( '[' (expression | '*') ']' )*;
+
+arrayInitialization: '{' expression (',' expression)* '}';
 
 assignment: IDENTIFIER ('[' expression ']')? assignmentOperator expression ';';
 

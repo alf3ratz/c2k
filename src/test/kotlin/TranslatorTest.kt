@@ -64,10 +64,33 @@ class TranslatorTest {
         val codeBlock = "{$cType x = true;}"
         val tree = Utils().getAstTree(codeBlock)
         val kotlinCode = visitor.visit(tree)
-        println(kotlinCode)
         assertEquals(
             "{\n$kType x = true\n}", kotlinCode
         )
+    }
+
+    @Test
+    fun arrayInitializationTest() {
+        val array = "int arr[5] = {1, 2, 3, 4, 5};"
+        val tree = Utils().getAstTree(array)
+        val kotlinCode = visitor.visit(tree)
+        assertEquals("val arr = arrayOf(1, 2, 3, 4, 5)", kotlinCode)
+    }
+
+    @Test
+    fun matrixArrayTest() {
+        val array = "int matrix[3][3];"
+        val tree = Utils().getAstTree(array)
+        val kotlinCode = visitor.visit(tree)
+        assertEquals("val matrix = Array(3) { Array(3) { 0 } }", kotlinCode)
+    }
+
+    @Test
+    fun arrayDeclarationTest() {
+        val array = "int arr[5];"
+        val tree = Utils().getAstTree(array)
+        val kotlinCode = visitor.visit(tree)
+        assertEquals("val arr = Array(5) { 0 }", kotlinCode)
     }
 
     companion object {

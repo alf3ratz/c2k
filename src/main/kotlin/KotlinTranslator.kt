@@ -8,18 +8,35 @@ class KotlinTranslator : CBaseVisitor<String>() {
     override fun visitDeclaration(ctx: CParser.DeclarationContext): String {
         val type = ctx.type().text
         val identifier = ctx.IDENTIFIER().text
-        val expression = visit(ctx.expression())
         val kotlinType = convertToKotlinType(type)
+        val arrayDeclaration = ctx.arrayDeclaration()
+        val expression = ctx.expression()
 
-        return "$kotlinType $identifier = $expression"
+        return if (arrayDeclaration != null) {
+            val dimensions = arrayDeclaration.expression().map { visit(it) }
+
+            val initialization = if (expression != null && ctx.expression().text.contains("{")) {
+                val elements = ctx.expression().text
+                    .removeSurrounding("{", "}")
+                    .split(",")
+                    .joinToString(", ") { it.trim() }
+                "arrayOf($elements)"
+            } else {
+                val arrayDimensions = dimensions.drop(1).joinToString(") { Array(") { it }
+                "Array(${dimensions.first()}) { ${if (arrayDimensions.isNotEmpty()) "Array($arrayDimensions) { 0 }" else "0"} }"
+            }
+
+            "val $identifier = $initialization"
+        } else {
+            "$kotlinType $identifier = ${expression?.let { visit(it) } ?: "0"}"
+        }
     }
 
     override fun visitAssignment(ctx: CParser.AssignmentContext): String {
-//        val identifier = ctx.IDENTIFIER().text
-//        val expression = visit(ctx.expression())
-
-        // return "$identifier = $expression"
-        return ""
+        val identifier = ctx.IDENTIFIER().text
+        val index = ctx.expression(0)?.let { "[${visit(it)}]" } ?: ""
+        val value = visit(ctx.expression(1))
+        return "$identifier$index = $value"
     }
 
     override fun visitExpression(ctx: CParser.ExpressionContext): String {
@@ -105,19 +122,12 @@ class KotlinTranslator : CBaseVisitor<String>() {
     }
 
     override fun visitArrayDeclaration(ctx: CParser.ArrayDeclarationContext): String {
-        val dimensions = ctx.expression().joinToString(", ") { visit(it) }
+        return ctx.expression().joinToString(", ") { visit(it) }
+    }
 
-        return if (ctx.expression().size == 1) {
-            "Array(${dimensions})"
-        } else {
-            var arrayInit = "Array(${dimensions.split(", ")[0]}) { "
-            for (i in 1 until ctx.expression().size) {
-                arrayInit += "Array(${dimensions.split(", ")[i]}) { "
-            }
-            arrayInit += "0"
-            arrayInit += " }".repeat(ctx.expression().size)
-            arrayInit
-        }
+    override fun visitArrayInitialization(ctx: CParser.ArrayInitializationContext): String {
+        // Преобразует инициализацию массива в Kotlin
+        return ctx.expression().joinToString(", ") { visit(it) }
     }
 
 
