@@ -16,11 +16,12 @@ class KotlinTranslator : CBaseVisitor<String>() {
             val dimensions = arrayDeclaration.expression().map { visit(it) }
 
             val initialization = if (expression != null && ctx.expression().text.contains("{")) {
-                val elements = ctx.expression().text
-                    .removeSurrounding("{", "}")
-                    .split(",")
-                    .joinToString(", ") { it.trim() }
-                "arrayOf($elements)"
+                // TODO: refactor
+//                val elements = ctx.expression().text
+//                    .removeSurrounding("{", "}")
+//                    .split(",")
+//                    .joinToString(", ") { it.trim() }
+//                "arrayOf($elements)"
             } else {
                 val arrayDimensions = dimensions.drop(1).joinToString(") { Array(") { it }
                 "Array(${dimensions.first()}) { ${if (arrayDimensions.isNotEmpty()) "Array($arrayDimensions) { 0 }" else "0"} }"
